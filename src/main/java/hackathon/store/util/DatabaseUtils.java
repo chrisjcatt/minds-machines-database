@@ -1,13 +1,3 @@
-/*
- * Copyright (c) 2016 General Electric Company. All rights reserved.
- *
- * The copyright to the computer software herein is the property of
- * General Electric Company. The software may be used and/or copied only
- * with the written permission of General Electric Company or in accordance
- * with the terms and conditions stipulated in the agreement/contract
- * under which the software has been supplied.
- */
-
 package hackathon.store.util;
 
 import java.io.Serializable;
@@ -21,13 +11,6 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import hackathon.store.BookingsTable;
-
-/**
- * Database utility class for retrieving snapshot configurations data.
- * 
- * @author 502604074
- */
 @Service
 @Transactional
 public class DatabaseUtils implements Serializable {

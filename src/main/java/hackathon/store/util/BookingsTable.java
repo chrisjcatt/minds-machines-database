@@ -1,4 +1,4 @@
-package hackathon.store;
+package hackathon.store.util;
 
 import javax.persistence.Column;
 import javax.persistence.ColumnResult;

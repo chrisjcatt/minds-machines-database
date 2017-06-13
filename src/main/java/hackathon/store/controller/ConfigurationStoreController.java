@@ -1,4 +1,4 @@
-package hackathon.database.controller;
+package hackathon.store.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,15 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import hackathon.store.BookingsTable;
+import hackathon.store.dto.StationIdRequest;
+import hackathon.store.dto.StatsCounter;
+import hackathon.store.dto.StatsUsageRequest;
+import hackathon.store.util.BookingsTable;
 import hackathon.store.util.DatabaseUtils;
 
-/**
- * Controller class for the snapshot configuration store.
- * 
- * @author 108013601
- *
- */
 @RestController
 @RequestMapping("/database")
 public class ConfigurationStoreController {

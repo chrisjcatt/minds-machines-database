@@ -1,4 +1,4 @@
-package hackathon.database.controller;
+package hackathon.store.dto;
 
 public class StatsCounter {
 	

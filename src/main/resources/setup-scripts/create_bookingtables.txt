@@ -1,0 +1,3 @@
+create schema hackathon;
+
+create table hackathon.bookingstable(id text PRIMARY KEY, station_id text, from_loc text, to_loc text, user_id text);

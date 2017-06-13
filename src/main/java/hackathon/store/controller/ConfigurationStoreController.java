@@ -32,7 +32,6 @@ public class ConfigurationStoreController {
 	public List<BookingsTable> getBookings() {
 		System.out.println("Getting all bookings");
 		return configurationStoreDatabaseUtils.getAllBookings();
-
 	}
 
 	@CrossOrigin
@@ -40,20 +39,19 @@ public class ConfigurationStoreController {
 	public List<BookingsTable> getBookingWhere(@RequestBody StationIdRequest stationIdRequest) {
 		System.out.println("Getting bookings where station_id = " + stationIdRequest.getStation_id());
 		return configurationStoreDatabaseUtils.getBookingFilterByStation(stationIdRequest.getStation_id());
-
 	}
 
 	@CrossOrigin
 	@RequestMapping(value = "bookings", method = { RequestMethod.DELETE })
 	public void deleteBookings() {
-		System.out.println("Deleting bookings");
+		System.out.println("Deleting all bookings");
 		configurationStoreDatabaseUtils.deleteAllBookings();
 	}
 
 	@CrossOrigin
 	@RequestMapping(value = "bookings", method = { RequestMethod.POST }, consumes = { "application/json" })
 	public void createBookings(@RequestBody BookingsTable[] bookings) {
-		System.out.println("Posting bookings");
+		System.out.println("Posting multiple bookings");
 		configurationStoreDatabaseUtils.createBookings(bookings);
 	}
 
@@ -62,7 +60,6 @@ public class ConfigurationStoreController {
 	public void deleteBooking(@RequestBody String id) {
 		System.out.println("Deleting a booking");
 		configurationStoreDatabaseUtils.deleteBooking(id);
-
 	}
 
 	@CrossOrigin
@@ -70,7 +67,6 @@ public class ConfigurationStoreController {
 	public void createBooking(@RequestBody BookingsTable booking) {
 		System.out.println("Posting a booking");
 		configurationStoreDatabaseUtils.createBooking(booking);
-
 	}
 
 	@CrossOrigin
@@ -82,53 +78,51 @@ public class ConfigurationStoreController {
 
 	private List<StatsCounter> getUsageStats(String startDate, String endDate) {
 
-		HashMap<Integer, Integer> counter = new HashMap<Integer, Integer>();
 		List<StatsCounter> counts = new ArrayList<StatsCounter>();
-		int beginIndex = 12;
-		int endIndex = 14;
+		int beginIndexHour = 12;
+		int endIndexHour = 14;
 
-		if (startDate.length() < beginIndex || endDate.length() < beginIndex) {
-			System.out.println("Input strings too short");
+		if (startDate.length() < beginIndexHour || endDate.length() < beginIndexHour) {
+			System.out.println("Input strings are not in the format YYYY-MON-DD HH24:MI:SS");
 			return counts;
 		}
 
-		System.out.println("startDate hour: " + startDate.substring(beginIndex, endIndex));
-		System.out.println("endDate hour: " + endDate.substring(beginIndex, endIndex));
-
-		Integer startHour = Integer.parseInt(startDate.substring(beginIndex, endIndex));
-		Integer endHour = Integer.parseInt(endDate.substring(beginIndex, endIndex));
-
-		String dateDay = startDate.substring(0, 12);
-
 		List<BookingsTable> bookings = getBookings();
 
+		HashMap<Integer, Integer> counter = new HashMap<Integer, Integer>();
+
 		for (BookingsTable booking : bookings) {
-			System.out.println(booking.toString());
-			if (booking.getFrom().length() > endIndex && booking.getTo().length() > endIndex) {
-				Integer bookStart = Integer.parseInt(booking.getFrom().substring(beginIndex, endIndex));
-				Integer bookEnd = Integer.parseInt(booking.getTo().substring(beginIndex, endIndex));
+
+			if (booking.getFrom().length() > endIndexHour && booking.getTo().length() > endIndexHour) {
+				Integer bookStart = Integer.parseInt(booking.getFrom().substring(beginIndexHour, endIndexHour));
+				Integer bookEnd = Integer.parseInt(booking.getTo().substring(beginIndexHour, endIndexHour));
+
+				if (bookEnd < bookStart) {
+					bookEnd = bookEnd + 24;
+				}
 
 				for (Integer i = bookStart; i <= bookEnd; i++) {
-					if (i >= startHour && i <= endHour) {
-						if (counter.containsKey(i)) {
-							counter.put(i, (counter.get(i) + 1));
-						} else {
-							counter.put(i, 1);
-						}
+
+					int key = i % 24;
+					System.out.println("key" + Integer.toString(key));
+					if (counter.containsKey(key)) {
+						counter.put(key, (counter.get(key) + 1));
+					} else {
+						counter.put(key, 1);
 					}
 				}
+
 			}
 		}
 
 		for (Integer i : counter.keySet()) {
-			counts.add(new StatsCounter(i, counter.get(i), dateDay));
-
+			if (i > 17) {
+				counts.add(new StatsCounter(i, counter.get(i), "2017-JUN-12"));
+			} else {
+				counts.add(new StatsCounter(i, counter.get(i), "2017-JUN-13"));
+			}
 		}
 
-		for (StatsCounter cc : counts) {
-			System.out.println(cc.toString());
-		}
 		return counts;
 	}
-
 }

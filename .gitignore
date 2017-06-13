@@ -1,0 +1,12 @@
+**/bin
+**/obj
+**/target
+**/*.suo
+**/*.config
+**/*.dll
+**/*StyleCop.Cache
+**/*.pubxml*
+**/*.settings
+**/*.project
+**/*.classpath
+**/*.gitignore

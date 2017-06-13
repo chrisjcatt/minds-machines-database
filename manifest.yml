@@ -1,0 +1,14 @@
+---
+applications:
+  - name: hackathon-booking-database
+    buildpack: java_buildpack
+    path: target/booking-database-1.3.3.RELEASE.jar
+services:
+  - MMEurope_postgres
+env:
+    LOG_LEVEL: INFO
+    spring_jpa_database: POSTGRESQL
+    spring_jpa_show_sql: false
+    spring_jpa_hibernate_format_sql: true
+    spring_jpa_hibernate_ddl_auto: validate
+    spring_jpa_properties_hibernate_default_schema: hackathon
